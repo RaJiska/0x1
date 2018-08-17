@@ -12,7 +12,7 @@ class Database extends PDO
 		try
 		{
 			parent::__construct(
-				'mysql:host=' . $config['db']['host'] . ';dbname=' . $config['db']['name'],
+				'mysql:host=' . $config['db']['host'] . ';dbname=' . $config['db']['name'] . ';charset=gbk',
 				$config['db']['username'], $config['db']['password'],
 				array(
 					PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -57,13 +57,13 @@ class Database extends PDO
 			echo('Database error: ' . htmlspecialchars($e->getMessage()));
 		if (!$this->log_fd)
 		{
-			$exists = (file_exists("log/" . $this->config['db']['logfile']));
-			if (!($this->log_fd = fopen("log/" . $this->config['db']['logfile'], 'a')))
+			$exists = (file_exists($this->config['logs_dir'] . "/" . $this->config['db']['logfile']));
+			if (!($this->log_fd = fopen($this->config['logs_dir'] . "/" . $this->config['db']['logfile'], 'a')))
 				return false;
 			if (!$exists)
-				chmod("log/" . $this->config['db']['logfile'], 0640);
+				chmod($this->config['logs_dir'] . "/" . $this->config['db']['logfile'], 0640);
 		}
-		return (fwrite($this->log_fd, "[" . $type . "] - " . date('m/d/Y h:i:s a', time()) . " - " . $e->getMessage()));
+		return (fwrite($this->log_fd, "[" . $type . "] - " . date('m/d/Y h:i:s a', time()) . " - " . $e->getMessage() . PHP_EOL));
 	}
 
 	/* Setters / Getters */
