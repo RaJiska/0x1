@@ -12,7 +12,7 @@ $config['logs_dir'] = __DIR__ . "/../logs";
 
 /* IP Whitelisting for upload */
 $config['ip']['whitelist'] = false;
-$config['ip']['allowed'] = [ "127.0.0.1" ];
+$config['ip']['allowed'] = array("127.0.0.1");
 
 /* MySQL DB Credentials */
 $config['db']['host'] = "localhost";
