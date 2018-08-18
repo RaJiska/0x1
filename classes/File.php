@@ -9,11 +9,10 @@ class File extends Base
 	protected $creation_date;
 	protected $deletion_date;
 	protected $file_type;
+	protected $active;
 
 	public function createFromUpload()
 	{
-		if (!isset($_FILES['file']))
-			return;
 		$this->ip = $_SERVER['REMOTE_ADDR'];
 		$this->name = $this->shortenName($_FILES['file']['name']);
 		$this->size = $_FILES['file']['size'];
@@ -23,10 +22,12 @@ class File extends Base
 			(int) (24 * 60 * 60 * $this->config['file']['min_age'] +
 			(-$this->config['file']['max_age'] + $this->config['file']['min_age']) *
 			pow(($this->size / $this->config['file']['max_size'] - 1), 3));
-		$this->file_type = $_FILES['file']['type'];
+		$fileinfo = new finfo(FILEINFO_MIME);
+		$this->file_type = $fileinfo->buffer(file_get_contents($_FILES['file']['tmp_name']));
+		$this->active = true;
 		try
 		{
-			$stmt = $this->Database->prepare("INSERT INTO files (ip, name, size, original_name, creation_date, deletion_date, file_type) VALUES (INET_ATON(?), ?, ?, ?, ?, ?, ?)");
+			$stmt = $this->Database->prepare("INSERT INTO files (ip, name, size, original_name, creation_date, deletion_date, file_type, active) VALUES (INET_ATON(?), ?, ?, ?, ?, ?, ?, ?)");
 			$stmt->execute(array(
 				$this->ip,
 				$this->name,
@@ -34,7 +35,8 @@ class File extends Base
 				$this->original_name,
 				$this->creation_date,
 				$this->deletion_date,
-				$this->file_type
+				$this->file_type,
+				$this->active
 			));
 		}
 		catch (PDOException $e)
@@ -42,12 +44,36 @@ class File extends Base
 			throw new Exception("File Upload: SQL Request Failed");
 		}
 		move_uploaded_file($_FILES['file']['tmp_name'], $this->config['uploads_dir'] . "/" . $this->name);
-		echo $this->name;
+		echo "http://" . $_SERVER['HTTP_HOST'] . "/" . $this->name . "\n";
 	}
 
 	public function loadFromDb($name)
 	{
+		try
+		{
+			$stmt = $this->Database->prepare("SELECT * FROM files WHERE name = ? AND active = '1' LIMIT 1;");
+			$stmt->execute(array($name));
+		}
+		catch (PDOException $e)
+		{
+			throw new Exception("Load File: Could not retrieve file");
+		}
+		$row = $stmt->fetch();
+		$this->ip = $row['ip'];
+		$this->name = $row['name'];
+		$this->size = $row['size'];
+		$this->original_name = $row['original_name'];
+		$this->creation_date = $row['creation_date'];
+		$this->deletion_type = $row['deletion_date'];
+		$this->file_type = $row['file_type'];
+		$this->active = $row['active'];
+	}
 
+	public function display()
+	{
+		header("Content-Type: " . $this->file_type);
+		header("Content-Security-Policy: default-src https:; object-src 'none'");
+		echo file_get_contents($this->config['uploads_dir'] . "/" . $this->name);
 	}
 
 	private function findUnusedName($name)
