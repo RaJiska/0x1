@@ -22,8 +22,10 @@ class File extends Base
 			(int) (24 * 60 * 60 * $this->config['file']['min_age'] +
 			(-$this->config['file']['max_age'] + $this->config['file']['min_age']) *
 			pow(($this->size / $this->config['file']['max_size'] - 1), 3));
-		$fileinfo = new finfo(FILEINFO_MIME);
+		$fileinfo = new finfo(FILEINFO_MIME_TYPE);
 		$this->file_type = $fileinfo->buffer(file_get_contents($_FILES['file']['tmp_name']));
+		if (array_key_exists($this->file_type, $this->config["mimesextensions"]))
+			$this->name .= "." . $this->config['mimesextensions'][$this->file_type];
 		$this->active = true;
 		try
 		{
