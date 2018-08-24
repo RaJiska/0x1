@@ -19,9 +19,9 @@ class File extends Base
 		$this->original_name = $_FILES['file']['name'];
 		$this->creation_date = time();
 		$this->deletion_date = $this->creation_date +
-			(int) (24 * 60 * 60 * $this->config['file']['min_age'] +
+			(int) (24 * 60 * 60 * ($this->config['file']['min_age'] +
 			(-$this->config['file']['max_age'] + $this->config['file']['min_age']) *
-			pow(($this->size / $this->config['file']['max_size'] - 1), 3));
+			pow((($this->size / 1000000)  / $this->config['file']['max_size'] - 1), 3)));
 		$fileinfo = new finfo(FILEINFO_MIME_TYPE);
 		$this->file_type = $fileinfo->buffer(file_get_contents($_FILES['file']['tmp_name']));
 		if (array_key_exists($this->file_type, $this->config["mimesextensions"]))
