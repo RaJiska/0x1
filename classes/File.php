@@ -78,8 +78,7 @@ class File extends Base
 		if ($this->config['nginx'] && $this->config['nginx']['x_accel_redirect'])
 		{
 			header("X-Accel-Redirect: /" . basename($this->config['uploads_dir']) . "/" . $this->name);
-			if ($this->config['nginx']['x_accel_limit'])
-				header("X-Accel-Limit-Rate: " . $this->config['nginx']['x_accel_limit'] . "k");
+			header("X-Accel-Limit-Rate: " . (int) ($this->config['nginx']['x_accel_limit'] * 1000));
 		}
 		else
 			echo file_get_contents($this->config['uploads_dir'] . "/" . $this->name);

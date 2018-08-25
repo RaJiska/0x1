@@ -5,7 +5,7 @@ $config['website_url'] = "http://website.com";
 
 $config['nginx']['enabled'] = false; /* Turn on if you use Nginx */
 $config['nginx']['x_accel_redirect'] = true; /* Recommended */
-$config['nginx']['x_accel_limit'] = 2000; /* Limit bandwidth to 2 MB/s (0 = disabled) */
+$config['nginx']['x_accel_limit'] = 0; /* Limit bandwidth to 2 MB/s (0 = disabled) */
 
 $config['file']['min_age'] = 30; /* Days */
 $config['file']['max_age'] = 365; /* Days */
