@@ -1,14 +1,19 @@
 <?php
 /* Name of the website */
 $config['website'] = "0x1 (Non-Null Pointer)";
+$config['website_url'] = "http://website.com";
+
+$config['nginx']['enabled'] = false; /* Turn on if you use Nginx */
+$config['nginx']['x_accel_redirect'] = true; /* Recommended */
+$config['nginx']['x_accel_limit'] = 2000; /* Limit bandwidth to 2 MB/s (0 = disabled) */
 
 $config['file']['min_age'] = 30; /* Days */
 $config['file']['max_age'] = 365; /* Days */
 $config['file']['max_size'] = 512; /* MB */
 $config['urlsalt'] = "somesalt";
 $config['shortenedurl_size'] = 4; /* May not be larger than SHA1 digest / 2 */
-$config['uploads_dir'] = __DIR__ . "/../uploads";
-$config['logs_dir'] = __DIR__ . "/../logs";
+$config['uploads_dir'] = dirname(__DIR__) . "/uploads";
+$config['logs_dir'] = dirname(__DIR__) . "/logs";
 
 /* MySQL DB Credentials */
 $config['db']['host'] = "localhost";

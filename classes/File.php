@@ -75,7 +75,14 @@ class File extends Base
 	{
 		header("Content-Type: " . $this->file_type);
 		header("Content-Security-Policy: default-src https:; object-src 'none'");
-		echo file_get_contents($this->config['uploads_dir'] . "/" . $this->name);
+		if ($this->config['nginx'] && $this->config['nginx']['x_accel_redirect'])
+		{
+			header("X-Accel-Redirect: /" . basename($this->config['uploads_dir']) . "/" . $this->name);
+			if ($this->config['nginx']['x_accel_limit'])
+				header("X-Accel-Limit-Rate: " . $this->config['nginx']['x_accel_limit'] . "k");
+		}
+		else
+			echo file_get_contents($this->config['uploads_dir'] . "/" . $this->name);
 	}
 
 	private function findUnusedName($name)
