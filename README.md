@@ -1,5 +1,5 @@
 # The Non-Null Pointer
-This project is a PHP implementation of "The Null Pointer" (0x0) by lachs0r (https://github.com/lachs0r/0x0).  
+This project is a PHP implementation of ["The Null Pointer" (0x0)](https://github.com/lachs0r/0x0) by lachs0r.  
 The purpose of this tool is to seamlessly upload files to a webserver.
 
 ## Setup
@@ -18,7 +18,7 @@ Further restrictions will also be required to avoid having files larger than the
 
 You'll also need to setup the cronjob which will delete files after their expiration date:
 ```
-contab -e
+$ contab -e
 0 */1 * * * (cd /path/to/website/root/crons && php clean.php)
 ```
 
