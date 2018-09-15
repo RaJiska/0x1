@@ -1,7 +1,9 @@
 <?php
 /* Name of the website */
-$config['website'] = "0x1 (Non-Null Pointer)";
-$config['website_url'] = "http://website.com";
+$config['website']['title'] = "0x1 (Non-Null Pointer)";
+$config['website']['url'] = "http://website.com";
+$config['website']['upload_passwd'] = ""; /* Restricts upload to password holders */
+$config['website']['upload_whitelist'] = array(/* "127.0.0.1" */); /* Restricts upload according to remote IP */
 
 $config['nginx']['enabled'] = false; /* Turn on if you use Nginx */
 $config['nginx']['x_accel_redirect'] = true; /* Recommended */

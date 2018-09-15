@@ -5,7 +5,13 @@ include_once '../classes/Database.php';
 include_once '../classes/File.php';
 
 if (isset($_FILES['file']))
-	$File->createFromUpload();
+{
+    if ($config['website']['upload_passwd'] && (!isset($_POST['passwd']) || $_POST['passwd'] != $config['website']['upload_passwd']))
+        die("ERROR: Wrong password for 'passwd' POST field\n");
+    if (!empty($config['website']['upload_whitelist']) && !in_array($_SERVER['REMOTE_ADDR'], $config['website']['upload_whitelist']))
+        die("ERROR: IP is not whitelisted\n");
+    $File->createFromUpload();
+}
 else
 {
 	echo "<pre>
@@ -13,7 +19,7 @@ THE NON NULL POINTER
 ====================
 
 HTTP POST files here:
-    curl -F'file=@yourfile.png' " . $config['website_url'] . "
+    curl -F'file=@yourfile.png' " . $config['website']['url'] . "
 
 File URLs are valid for at least " . $config['file']['min_age'] . " days and up to a year (see below).
 
