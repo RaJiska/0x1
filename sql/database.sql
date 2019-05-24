@@ -1,3 +1,8 @@
+CREATE DATABASE nnullptr;
+USE nnullptr;
+
+GRANT ALL PRIVILEGES ON nnullptr.* TO 'nnullptr_user'@'%' IDENTIFIED BY 'passwd';
+
 CREATE TABLE files (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	ip INT UNSIGNED,

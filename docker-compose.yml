@@ -1,0 +1,18 @@
+version: '3'
+services:
+  web:
+    container_name: 0x1_server
+    build: .
+    volumes:
+      - ./html:/var/www/html
+    ports:
+      - 8080:80
+    depends_on:
+      - database
+  database:
+    container_name: 0x1_database
+    image: mariadb/server
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./docker/volumes/mysql:/var/lib/mysql

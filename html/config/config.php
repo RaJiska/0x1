@@ -7,7 +7,7 @@ $config['website']['upload_whitelist'] = array(/* "127.0.0.1" */); /* Restricts 
 
 $config['nginx']['enabled'] = false; /* Turn on if you use Nginx */
 $config['nginx']['x_accel_redirect'] = true; /* Recommended */
-$config['nginx']['x_accel_limit'] = 0; /* Limit bandwidth to 2 MB/s (0 = disabled) */
+$config['nginx']['x_accel_limit'] = 0; /* Limit bandwidth per user (0 = disabled) */
 
 $config['file']['min_age'] = 30; /* Days */
 $config['file']['max_age'] = 365; /* Days */
@@ -18,7 +18,7 @@ $config['uploads_dir'] = dirname(__DIR__) . "/uploads";
 $config['logs_dir'] = dirname(__DIR__) . "/logs";
 
 /* MySQL DB Credentials */
-$config['db']['host'] = "localhost";
+$config['db']['host'] = "0x1_database";
 $config['db']['name'] = "nnullptr";
 $config['db']['username'] = 'nnullptr_user';
 $config['db']['password'] = 'passwd';
