@@ -3,6 +3,12 @@ services:
   web:
     container_name: 0x1_server
     build: .
+    environment:
+      - DB_HOST=0x1_database
+      - DB_NAME=nnullptr
+      - DB_USERNAME=nnullptr_user
+      - DB_PASSWORD=passwd
+      - DB_ROOT_PASSWORD=root # Should be the same value as MYSQL_ROOT_PASSWORD for the 'database' container
     volumes:
       - ./html:/var/www/html
     ports:
