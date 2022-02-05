@@ -74,6 +74,7 @@ class File extends Base
 	public function display()
 	{
 		header("Content-Type: " . $this->file_type);
+		header("Content-Disposition: filename=" . $this->original_name);
 		header("Content-Security-Policy: default-src https:; object-src 'none'");
 		if ($this->config['nginx'] && $this->config['nginx']['x_accel_redirect'])
 		{
